@@ -13,6 +13,7 @@ use pyo3::{ffi, intern, AsPyPointer, PyTypeInfo};
 
 use crate::build_tools::safe_repr;
 use crate::errors::{ErrorType, InputValue, LocItem, ValError, ValResult};
+use crate::input::shared::jonas_as_str;
 use crate::{ArgsKwargs, PyMultiHostUrl, PyUrl};
 
 use super::datetime::{
@@ -72,6 +73,14 @@ macro_rules! extract_dict_iter {
 }
 
 impl<'a> Input<'a> for PyAny {
+    fn validate_jonas(&'a self) -> ValResult<EitherString<'a>> {
+        if let Some(cow_str) = maybe_as_string(self, ErrorType::JonasError)? {
+            jonas_as_str(self, &cow_str)
+        } else {
+            Err(ValError::new(ErrorType::JonasError, self))
+        }
+    }
+
     fn get_type(&self) -> &'static InputType {
         &InputType::Python
     }

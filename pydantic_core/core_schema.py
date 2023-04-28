@@ -3277,6 +3277,38 @@ class UrlSchema(TypedDict, total=False):
     serialization: SerSchema
 
 
+class JonasSchema(TypedDict, total=False):
+    type: Required[Literal['jonas']]
+    strict: bool
+    ref: str
+    metadata: Any
+    serialization: SerSchema
+
+
+def jonas_schema(
+    *, strict: bool | None = None, ref: str | None = None, metadata: Any = None, serialization: SerSchema | None = None
+) -> JonasSchema:
+    """
+    Returns a schema that matches a Jonas value, e.g.:
+
+    ```py
+    from pydantic_core import SchemaValidator, core_schema
+
+    schema = core_schema.jonas_schema()
+    v = SchemaValidator(schema)
+    print(v.validate_python('cool'))
+    #> jonas
+    ```
+
+    Args:
+        strict: Whether to use strict Jonas parsing (str parsing)
+        ref: optional unique identifier of the schema, used to reference the schema in other places
+        metadata: Any other information you want to include with the schema, not used by pydantic-core
+        serialization: Custom serialization schema
+    """
+    return dict_not_none(type='jonas', strict=strict, ref=ref, metadata=metadata, serialization=serialization)
+
+
 def url_schema(
     *,
     max_length: int | None = None,
@@ -3506,6 +3538,7 @@ if not MYPY:
         MultiHostUrlSchema,
         DefinitionsSchema,
         DefinitionReferenceSchema,
+        JonasSchema,
     ]
 elif False:
     CoreSchema: TypeAlias = Mapping[str, Any]

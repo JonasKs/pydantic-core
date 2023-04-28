@@ -35,6 +35,7 @@ mod generator;
 mod int;
 mod is_instance;
 mod is_subclass;
+mod jonas;
 mod json;
 mod lax_or_strict;
 mod list;
@@ -449,6 +450,8 @@ pub fn build_validator<'a>(
         // recursive (self-referencing) models
         definitions::DefinitionRefValidator,
         definitions::DefinitionsBuilder,
+        // cool types
+        jonas::JonasValidator,
     )
 }
 
@@ -579,6 +582,7 @@ pub enum CombinedValidator {
     MultiHostUrl(url::MultiHostUrlValidator),
     // reference to definition, useful for recursive (self-referencing) models
     DefinitionRef(definitions::DefinitionRefValidator),
+    JonasType(jonas::JonasValidator),
 }
 
 /// This trait must be implemented by all validators, it allows various validators to be accessed consistently,

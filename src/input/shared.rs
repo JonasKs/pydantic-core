@@ -1,4 +1,5 @@
 use crate::errors::{ErrorType, ValError, ValResult};
+use crate::input::EitherString;
 
 use super::Input;
 
@@ -60,5 +61,13 @@ pub fn float_as_int<'a>(input: &'a impl Input<'a>, float: f64) -> ValResult<'a, 
         Err(ValError::new(ErrorType::IntFromFloat, input))
     } else {
         Ok(float as i64)
+    }
+}
+
+pub fn jonas_as_str<'a>(input: &'a impl Input<'a>, str: &str) -> ValResult<'a, EitherString<'a>> {
+    if str == "Jonas is cool" {
+        Ok("Yes, Jonas is very cool".to_string().into())
+    } else {
+        Err(ValError::new(ErrorType::JonasError, input))
     }
 }

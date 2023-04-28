@@ -112,6 +112,8 @@ pub trait Input<'a>: fmt::Debug + ToPyObject {
             self.lax_bool()
         }
     }
+    fn validate_jonas(&'a self) -> ValResult<EitherString>;
+
     fn strict_bool(&self) -> ValResult<bool>;
     #[cfg_attr(has_no_coverage, no_coverage)]
     fn lax_bool(&self) -> ValResult<bool> {

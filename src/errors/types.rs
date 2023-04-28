@@ -294,6 +294,7 @@ pub enum ErrorType {
     UrlScheme {
         expected_schemes: String,
     },
+    JonasError,
 }
 
 macro_rules! render {
@@ -533,6 +534,7 @@ impl ErrorType {
             Self::UrlSyntaxViolation {..} => "Input violated strict URL syntax rules, {error}",
             Self::UrlTooLong {..} => "URL should have at most {max_length} characters",
             Self::UrlScheme {..} => "URL scheme should be {expected_schemes}",
+            Self::JonasError => "You're wrong, he is cool!"
         }
     }
 
